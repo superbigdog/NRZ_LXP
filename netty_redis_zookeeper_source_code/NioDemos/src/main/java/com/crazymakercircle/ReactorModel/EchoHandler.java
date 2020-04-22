@@ -8,6 +8,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
+import java.util.Arrays;
 
 class EchoHandler implements Runnable {
     final SocketChannel channel;
@@ -47,6 +48,7 @@ class EchoHandler implements Runnable {
                 //从通道读
                 int length = 0;
                 while ((length = channel.read(byteBuffer)) > 0) {
+                    Logger.info(Arrays.toString(byteBuffer.array()));
                     Logger.info(new String(byteBuffer.array(), 0, length));
                 }
                 //读完后，准备开始写入通道,byteBuffer切换成读模式
