@@ -28,7 +28,9 @@ public class EchoServeReactor implements Runnable{
     @Override
     public void run() {
         try{
+            int n = 0;
             while (!Thread.interrupted()){
+                Logger.info(n++);
                 //这里除过返回一个int值之外，还要生成SelectionKey的set
                 if (selector.select()>0){
                     Set<SelectionKey> selectionKeys = selector.selectedKeys();

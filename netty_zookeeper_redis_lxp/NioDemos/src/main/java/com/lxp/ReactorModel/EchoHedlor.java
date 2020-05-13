@@ -30,19 +30,10 @@ public class EchoHedlor implements Runnable{
     @Override
     public void run() {
         try{
-            if (state == SENDING){
-                //写入通道
-                channel.write(byteBuffer);
-                //写完后，准备开始从通道读，beteBuffer切换写入模式
-                byteBuffer.clear();
-                //写完后，注册read就绪事件
-                sk.interestOps(SelectionKey.OP_READ);
-                state = RECIEVING;
-            }else if(state == RECIEVING){
+            if(state == RECIEVING){
                 //从通道读
                 int length = 0;
                 while ((length = channel.read(byteBuffer)) > 0){
-                    Logger.info(Arrays.toString(byteBuffer.array()));
                     Logger.info("client msg:" + new String(byteBuffer.array(),0,length));
                 }
                 //读完后，准备开始写入通道，byteBuffer切换成读取模式
@@ -51,6 +42,15 @@ public class EchoHedlor implements Runnable{
                 sk.interestOps(SelectionKey.OP_WRITE);
                 //读完后，进入发送额状态
                 state = SENDING;
+            }
+            if (state == SENDING){
+                //写入通道
+                channel.write(byteBuffer);
+                //写完后，准备开始从通道读，beteBuffer切换写入模式
+                byteBuffer.clear();
+                //写完后，注册read就绪事件
+                sk.interestOps(SelectionKey.OP_READ);
+                state = RECIEVING;
             }
         } catch (IOException e) {
             e.printStackTrace();

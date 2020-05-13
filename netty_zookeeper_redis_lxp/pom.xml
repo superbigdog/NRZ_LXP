@@ -11,6 +11,7 @@
     <modules>
         <module>chatcommon</module>
         <module>NioDemos</module>
+        <module>NettyDemos</module>
     </modules>
 
 
